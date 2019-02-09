@@ -36,6 +36,7 @@ namespace ContainerNinject
     public class Car
     {
         private readonly IEngine _engine;
+        public string Name { private get; set; }
 
         public Car(IEngine engine)
         {
@@ -45,6 +46,12 @@ namespace ContainerNinject
         public void GetDescription()
         {
             Console.WriteLine("Engine size: {0}L", _engine.GetSize());
+        }
+
+        public void GetName()
+        {
+            if (Name == null) return;
+            Console.WriteLine("The car name: {0}", Name);
         }
     }
 
@@ -81,15 +88,33 @@ namespace ContainerNinject
 
     #region how use Ninject (!! download:  PM> Install-Package Ninject)
 
-    public class MyConfigModule : NinjectModule
+    public class MyConfigModule_0 : NinjectModule
     {
         public override void Load()
         {
-            //Bind<IEngine>().To<Engine>();
-            //Bind<IEngine>().To<Engine1>();
-            Bind<IEngine>().To<Engine2>();
-
+            Bind<IEngine>().To<Engine>();
             Bind<Car>().ToSelf().InSingletonScope();
+        }
+    }
+
+    public class MyConfigModule_1 : NinjectModule
+    {
+        public override void Load()
+        {
+            Bind<IEngine>().To<Engine1>();
+            Bind<Car>().ToSelf().InSingletonScope();
+        }
+    }
+
+    /// <summary>
+    /// With simultaneous initialization of the Name property of the Car class
+    /// </summary>
+    public class MyConfigModule_2 : NinjectModule
+    {
+        public override void Load()
+        {
+            Bind<IEngine>().To<Engine2>();
+            Bind<Car>().ToSelf().WithPropertyValue("Name", "Mazeratti");
         }
     }
 
@@ -105,11 +130,12 @@ namespace ContainerNinject
 
 
             // Ninject Initialization
-            IKernel ninjectKernel = new StandardKernel(new MyConfigModule());
+            IKernel ninjectKernel = new StandardKernel(new MyConfigModule_2());
 
             // Using Car
             var car = ninjectKernel.Get<Car>();
             car.GetDescription();
+            car.GetName();
 
             Console.WriteLine();
         }
