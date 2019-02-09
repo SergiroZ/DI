@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BBAE3394-A342-4CC3-8F05-227A1F7ACF7A}</ProjectGuid>
+    <ProjectGuid>{F2215E24-E2FB-4FC9-AC3F-5EC922986789}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ContainerNinject</RootNamespace>
-    <AssemblyName>ContainerNinject</AssemblyName>
+    <RootNamespace>ContainerAutofac</RootNamespace>
+    <AssemblyName>ContainerAutofac</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -35,9 +35,6 @@
   <ItemGroup>
     <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.8.1\lib\net45\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
