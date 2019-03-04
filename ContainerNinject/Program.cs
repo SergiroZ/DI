@@ -4,7 +4,7 @@ using Ninject.Modules;
 
 namespace ContainerNinject
 {
-    #region without DI
+#region without DI
 
     //public class Engine
     //{
@@ -29,19 +29,16 @@ namespace ContainerNinject
     //    }
     //}
 
-    #endregion without DI
+#endregion without DI
 
-    #region refactoring according to DI
+#region refactoring according to DI
 
     public class Car
     {
         private readonly IEngine _engine;
         public string Name { private get; set; }
 
-        public Car(IEngine engine)
-        {
-            _engine = engine;
-        }
+        public Car(IEngine engine) => _engine = engine;
 
         public void GetDescription()
         {
@@ -62,18 +59,12 @@ namespace ContainerNinject
 
     public class Engine : IEngine
     {
-        public double GetSize()
-        {
-            return 2.5; // in liters
-        }
+        public double GetSize() => 2.5;
     }
 
     public class Engine1 : IEngine
     {
-        public double GetSize()
-        {
-            return 10; // in liters
-        }
+        public double GetSize() => 10;
     }
 
     internal class Engine2 : IEngine
@@ -84,9 +75,9 @@ namespace ContainerNinject
         }
     }
 
-    #endregion refactoring according to DI
+#endregion refactoring according to DI
 
-    #region how use Ninject (!! download:  PM> Install-Package Ninject)
+#region how use Ninject (!! download:  PM> Install-Package Ninject)
 
     public class MyConfigModule_0 : NinjectModule
     {
@@ -106,6 +97,7 @@ namespace ContainerNinject
         }
     }
 
+    /// <inheritdoc />
     /// <summary>
     /// With simultaneous initialization of the Name property of the Car class
     /// </summary>
@@ -118,24 +110,47 @@ namespace ContainerNinject
         }
     }
 
-    #endregion
+#endregion
 
     internal class Program
     {
         private static void Main()
         {
-            IEngine engine = new Engine(); //refactoring according to DI
-            var car_0 = new Car(engine);
-            car_0.GetDescription();
+            //IEngine engine = new Engine(); //refactoring according to DI
+            //var car_0 = new Car(engine);
+            //car_0.GetDescription();
+            //Console.WriteLine();
 
 
             // Ninject Initialization
-            IKernel ninjectKernel = new StandardKernel(new MyConfigModule_2());
+            Car car;
+            using (IKernel ninjectKernel = new StandardKernel(new MyConfigModule_0()))
+            {
+                // Using Car
+                car = ninjectKernel.Get<Car>();
+                car.GetDescription();
+                car.GetName();
+            }
+            
+            Console.WriteLine();
 
-            // Using Car
-            var car = ninjectKernel.Get<Car>();
-            car.GetDescription();
-            car.GetName();
+            using (IKernel ninjectKernel = new StandardKernel(new MyConfigModule_1()))
+            {
+                // Using Car
+                car = ninjectKernel.Get<Car>();
+                car.GetDescription();
+                car.GetName();
+            }
+
+            Console.WriteLine();
+
+            using (IKernel ninjectKernel = new StandardKernel(new MyConfigModule_2()))
+            {
+                // Using Car
+                car = ninjectKernel.Get<Car>();
+                car.GetDescription();
+                car.GetName();
+            }
 
             Console.WriteLine();
         }
